@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -93,6 +95,39 @@ public class StudentScoreSystem {
         }
     }
 
+    // 统计课程成绩
+    public static void statisticsScore() {
+        System.out.println("请输入课程名称:");
+        String course = scanner.nextLine();
+        List<Double> scores = new ArrayList<>();
+        for (Student student : studentMap.values()) {
+            if (student.getCourse().equals(course)) {
+                scores.add(student.getScore());
+            }
+        }
+        if (scores.isEmpty()) {
+            System.out.println("没有该课程的成绩记录");
+            return;
+        }
+        double sum = 0;
+        double max = scores.get(0);
+        double min = scores.get(0);
+        for (double score : scores) {
+            sum += score;
+            if (score > max) {
+                max = score;
+            }
+            if (score < min) {
+                min = score;
+            }
+        }
+        double average = sum / scores.size();
+        System.out.println("课程: " + course);
+        System.out.println("平均分: " + String.format("%.2f", average));
+        System.out.println("最高分: " + max);
+        System.out.println("最低分: " + min);
+    }
+
     private static void printStudentInfo(Student student) {
         System.out.println("姓名: " + student.getName() + ", 学号: " + student.getId() +
                 ", 课程: " + student.getCourse() + ", 成绩: " + student.getScore());
@@ -114,6 +149,9 @@ public class StudentScoreSystem {
                     break;
                 case 2:
                     queryScore();
+                    break;
+                case 3:
+                    statisticsScore();
                     break;
                 case 4:
                     System.out.println("感谢使用学生成绩管理系统, 再见!");
